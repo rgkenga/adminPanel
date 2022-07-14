@@ -3,42 +3,11 @@
     <div class="container">
       <div class="wrapper-products">
         <FormulateForm
-          #default="{ isLoading }"
-          :values="model"
           v-model="model"
+          :values="model"
+          :schema="schema"
           @submit="onFormSubmit"
         >
-          <FormulateInput
-            type="text"
-            name="name"
-            label="Your name"
-          />
-          <FormulateInput
-            type="text"
-            name="description"
-            label="Your description"
-          />
-          <FormulateInput
-            type="group"
-            name="variants"
-            :repeatable="true"
-          >
-            <FormulateInput
-              type="number"
-              name="price"
-              label="price"
-            />
-            <FormulateInput
-              type="number"
-              name="size"
-              label="size"
-            />
-          </FormulateInput>
-          <FormulateInput
-            type="submit"
-            :disabled="isLoading"
-            :label="isLoading ? 'Loading...' : 'Submit this form'"
-          />
           <code class="code code--block">{{ model }}</code>
         </FormulateForm>
       </div>
@@ -48,14 +17,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { schema } from './fields'
 
 export default {
   name: 'ProductForm',
   data: () => ({
-    model: {
-      type: Array,
-      default: () => []
-    }
+    model: null,
+    schema
   }),
   computed: {
     ...mapGetters({
@@ -71,7 +39,6 @@ export default {
     if (this.isUpdating) {
       await this.fetchItem(this.$route.params.id)
       this.model = { ...this.item }
-      console.log('mounted', this.model)
       return
     }
     this.setModel()
@@ -85,7 +52,7 @@ export default {
     setModel () {
       this.model = {
         name: '',
-        discription: ''
+        description: ''
       }
     },
     async onItemUpdate () {
@@ -93,7 +60,6 @@ export default {
         id: this.$route.params.id,
         payload: this.model
       })
-      console.log('Происходит обновление товара', this.model)
       this.$router.back()
     },
     async onItemCreate () {

@@ -10,11 +10,6 @@ export const schema = [
     type: 'text'
   },
   {
-    label: 'Категория',
-    name: 'category',
-    type: 'text'
-  },
-  {
     type: 'group',
     name: 'variants',
     repeatable: true,
@@ -35,6 +30,6 @@ export const schema = [
   },
   {
     type: 'submit',
-    label: 'Кнопка'
+    label: 'Сохранить'
   }
 ]
